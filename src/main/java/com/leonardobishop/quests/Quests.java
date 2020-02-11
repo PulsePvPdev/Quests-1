@@ -1,6 +1,7 @@
 package com.leonardobishop.quests;
 
 import com.leonardobishop.quests.api.QuestsPlaceholders;
+import com.leonardobishop.quests.api.enums.StoreType;
 import com.leonardobishop.quests.bstats.Metrics;
 import com.leonardobishop.quests.commands.CommandQuests;
 import com.leonardobishop.quests.events.EventInventory;
@@ -17,6 +18,7 @@ import com.leonardobishop.quests.quests.QuestManager;
 import com.leonardobishop.quests.quests.Task;
 import com.leonardobishop.quests.quests.tasktypes.TaskTypeManager;
 import com.leonardobishop.quests.quests.tasktypes.types.*;
+import com.leonardobishop.quests.sql.SQLConnector;
 import com.leonardobishop.quests.title.Title;
 import com.leonardobishop.quests.title.Title_Bukkit;
 import com.leonardobishop.quests.title.Title_BukkitNoTimings;
@@ -39,14 +41,18 @@ import java.util.Map;
 import java.util.logging.Level;
 
 public class Quests extends JavaPlugin {
-
+    private static SQLConnector connector;
     private static QuestManager questManager;
     private static QPlayerManager qPlayerManager;
     private static TaskTypeManager taskTypeManager;
     private static Updater updater;
     private static Title title;
     private boolean brokenConfig = false;
-    private QuestsConfigLoader questsConfigLoader;
+    private static QuestsConfigLoader questsConfigLoader;
+
+    public SQLConnector getDatabase() {
+        return connector;
+    }
 
     public static Quests get() {
         return (Quests) Bukkit.getPluginManager().getPlugin("Quests");
@@ -170,7 +176,7 @@ public class Quests extends JavaPlugin {
             }
 
             for (Player player : Bukkit.getOnlinePlayers()) {
-                qPlayerManager.loadPlayer(player.getUniqueId(), false);
+                qPlayerManager.loadPlayer(player.getUniqueId(), false, StoreType.YAML);
             }
         });
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {

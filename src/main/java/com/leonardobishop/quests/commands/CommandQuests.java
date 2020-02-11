@@ -3,6 +3,7 @@ package com.leonardobishop.quests.commands;
 import com.leonardobishop.quests.Quests;
 import com.leonardobishop.quests.QuestsConfigLoader;
 import com.leonardobishop.quests.api.enums.QuestStartResult;
+import com.leonardobishop.quests.api.enums.StoreType;
 import com.leonardobishop.quests.obj.Messages;
 import com.leonardobishop.quests.obj.Options;
 import com.leonardobishop.quests.player.QPlayer;
@@ -149,7 +150,7 @@ public class CommandQuests implements CommandExecutor {
                             QPlayer qPlayer = plugin.getPlayerManager().getPlayer(uuid);
                             if (qPlayer == null) {
                                 sender.sendMessage(Messages.COMMAND_QUEST_ADMIN_LOADDATA.getMessage().replace("{player}", name));
-                                plugin.getPlayerManager().loadPlayer(uuid, true);
+                                plugin.getPlayerManager().loadPlayer(uuid, true, StoreType.YAML);
                                 qPlayer = plugin.getPlayerManager().getPlayer(uuid); //get again
                             }
                             if (qPlayer == null) {
@@ -212,7 +213,7 @@ public class CommandQuests implements CommandExecutor {
                         QPlayer qPlayer = plugin.getPlayerManager().getPlayer(uuid);
                         if (qPlayer == null) {
                             sender.sendMessage(Messages.COMMAND_QUEST_ADMIN_LOADDATA.getMessage().replace("{player}", name));
-                            plugin.getPlayerManager().loadPlayer(uuid, true);
+                            plugin.getPlayerManager().loadPlayer(uuid, true, StoreType.YAML);
                         }
                         if (qPlayer == null) {
                             sender.sendMessage(Messages.COMMAND_QUEST_ADMIN_NODATA.getMessage().replace("{player}", name));

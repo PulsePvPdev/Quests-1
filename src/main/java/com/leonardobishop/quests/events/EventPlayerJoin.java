@@ -1,6 +1,7 @@
 package com.leonardobishop.quests.events;
 
 import com.leonardobishop.quests.Quests;
+import com.leonardobishop.quests.api.enums.StoreType;
 import com.leonardobishop.quests.obj.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -20,7 +21,7 @@ public class EventPlayerJoin implements Listener {
     @EventHandler
     public void onEvent(PlayerJoinEvent event) {
         UUID playerUuid = event.getPlayer().getUniqueId();
-        plugin.getPlayerManager().loadPlayer(playerUuid, false);
+        plugin.getPlayerManager().loadPlayer(playerUuid, false, StoreType.YAML);
         if (plugin.getDescription().getVersion().contains("beta") && event.getPlayer().hasPermission("quests.admin")) {
             event.getPlayer().sendMessage(Messages.BETA_REMINDER.getMessage());
         }

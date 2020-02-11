@@ -159,10 +159,10 @@ public class QuestsConfigLoader {
         String cType = config.getString(path + ".type", path + ".type");
         List<String> cLoreNormal = config.getStringList(path + ".lore-normal");
         List<String> cLoreStarted = config.getStringList(path + ".lore-started");
+        int data = config.getInt(path + ".data", 0);
 
         String name;
         Material type;
-        int data = 0;
         List<String> loreNormal = new ArrayList<>();
         if (cLoreNormal != null) {
             for (String s : cLoreNormal) {
@@ -177,7 +177,7 @@ public class QuestsConfigLoader {
         }
         name = ChatColor.translateAlternateColorCodes('&', cName);
 
-        type = Material.matchMaterial(cType);
+        type = Material.getMaterial(cType);
 
 
         if (type == null) {

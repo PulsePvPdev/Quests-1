@@ -166,6 +166,22 @@ titles:
     title: "&cQuest Complete"
     subtitle: "&7{quest}"
 
+# Saving Options
+database:
+  # Chaging the type does not convert the values already stored
+  # Available values: YAML, SQL, MYSQL
+  type: YAML
+  # SQL database file name (.db for extension)
+  file_name: "quests.db"
+  # Ignore these if type is SQL or YAML
+  host: "localhost"
+  user: "database_user"
+  password: "p4ssW0rd"
+  port: "3306"
+  name: "database_name"
+  ssl: true
+  table_prefix: "Quests_"
+
 # Configure messages
 messages:
   time-format: "{hours}h {minutes}m"
