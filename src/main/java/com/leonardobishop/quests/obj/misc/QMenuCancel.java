@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class QMenuCancel implements QMenu {
 
-    private final HashMap<Integer, String> slotsToQuestIds = new HashMap<>();
+    private final Map<Integer, String> slotsToQuestIds = new HashMap<>();
     private final QMenuQuest superMenu;
     private final QPlayer owner;
     private final Quest quest;
@@ -33,7 +33,7 @@ public class QMenuCancel implements QMenu {
     }
 
     @Override
-    public HashMap<Integer, String> getSlotsToMenu() {
+    public Map<Integer, String> getSlotsToMenu() {
         return slotsToQuestIds;
     }
 

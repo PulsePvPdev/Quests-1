@@ -18,11 +18,12 @@ import org.bukkit.event.inventory.InventoryType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class EventInventory implements Listener {
 
-    private static HashMap<UUID, QMenu> tracker = new HashMap<>();
+    private static Map<UUID, QMenu> tracker = new HashMap<>();
     private Quests plugin;
 
     // ADD PLAYERS TO THE BUFFER BEFORE AN ANTICIPATED MENU CHANGE SO THAT

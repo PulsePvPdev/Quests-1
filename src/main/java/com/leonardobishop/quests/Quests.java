@@ -244,11 +244,11 @@ public class Quests extends JavaPlugin {
     public ItemStack getItemStack(ConfigurationSection config) {
         String cName = config.getString("name", "name");
         String cType = config.getString("type", "type");
+        int data = config.getInt("data", 0);
         List<String> cLore = config.getStringList("lore");
 
         String name;
         Material type;
-        int data = 0;
         List<String> lore = new ArrayList<>();
         if (cLore != null) {
             for (String s : cLore) {

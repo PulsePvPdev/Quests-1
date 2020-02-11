@@ -5,7 +5,7 @@ import com.leonardobishop.quests.player.QPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class QMenuCreator implements QMenu {
 
@@ -16,7 +16,7 @@ public class QMenuCreator implements QMenu {
     }
 
     @Override
-    public HashMap<Integer, String> getSlotsToMenu() {
+    public Map<Integer, String> getSlotsToMenu() {
         return null;
     }
 

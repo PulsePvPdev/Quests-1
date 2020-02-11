@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class QPlayerManager {
 
@@ -21,15 +23,14 @@ public class QPlayerManager {
         this.plugin = plugin;
     }
 
-    private final Map<UUID, QPlayer> qPlayers = new HashMap<>();
+    private final ConcurrentMap<UUID, QPlayer> qPlayers = new ConcurrentHashMap<>();
 
     public QPlayer getPlayer(UUID uuid) {
         return qPlayers.get(uuid);
     }
 
     public void removePlayer(UUID uuid) {
-        this.getPlayer(uuid).getQuestProgressFile().saveToDisk(false);
-        qPlayers.remove(uuid);
+        qPlayers.remove(uuid).getQuestProgressFile().saveToDisk(false);
     }
 
     public Collection<QPlayer> getQPlayers() {

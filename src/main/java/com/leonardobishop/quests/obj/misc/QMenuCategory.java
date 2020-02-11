@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Menu list of categories.
@@ -18,7 +19,7 @@ import java.util.List;
 public class QMenuCategory implements QMenu {
 
     private final int pageSize = 45;
-    private final HashMap<Integer, QMenuQuest> slotsToMenuQuest = new HashMap<>();
+    private final Map<Integer, QMenuQuest> slotsToMenuQuest = new HashMap<>();
     private final QPlayer owner;
 
     public QMenuCategory(QPlayer owner) {
@@ -39,7 +40,7 @@ public class QMenuCategory implements QMenu {
     }
 
     @Override
-    public HashMap<Integer, QMenuQuest> getSlotsToMenu() {
+    public Map<Integer, QMenuQuest> getSlotsToMenu() {
         return slotsToMenuQuest;
     }
 

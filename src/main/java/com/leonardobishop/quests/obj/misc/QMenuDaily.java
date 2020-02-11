@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class QMenuDaily implements QMenu {
 
-    private final HashMap<Integer, String> slotsToQuestIds = new HashMap<>();
+    private final Map<Integer, String> slotsToQuestIds = new HashMap<>();
     private int backButtonLocation = -1;
     private boolean backButtonEnabled = true;
     private final QMenuCategory superMenu;
@@ -40,7 +40,7 @@ public class QMenuDaily implements QMenu {
     }
 
     @Override
-    public HashMap<Integer, String> getSlotsToMenu() {
+    public Map<Integer, String> getSlotsToMenu() {
         return slotsToQuestIds;
     }
 
