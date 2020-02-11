@@ -30,7 +30,7 @@ public class QPlayerManager {
     }
 
     public void removePlayer(UUID uuid) {
-        qPlayers.remove(uuid).getQuestProgressFile().saveToDisk(false);
+        qPlayers.remove(uuid).getQuestProgressFile().saveToDisk();
     }
 
     public Collection<QPlayer> getQPlayers() {

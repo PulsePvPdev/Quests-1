@@ -184,7 +184,7 @@ public class Quests extends JavaPlugin {
                 if (qPlayer.isOnlyDataLoaded()) {
                     continue;
                 }
-                qPlayer.getQuestProgressFile().saveToDisk(false);
+                qPlayer.getQuestProgressFile().saveToDisk();
             }
         }, 12000L, 12000L);
         Bukkit.getScheduler().runTaskTimer(this, () -> {
@@ -224,7 +224,7 @@ public class Quests extends JavaPlugin {
             if (qPlayer.isOnlyDataLoaded()) {
                 continue;
             }
-            qPlayer.getQuestProgressFile().saveToDisk(true);
+            qPlayer.getQuestProgressFile().saveToDisk();
         }
     }
 

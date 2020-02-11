@@ -1,7 +1,6 @@
 package com.leonardobishop.quests.events;
 
 import com.leonardobishop.quests.Quests;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -19,7 +18,7 @@ public class EventPlayerLeave implements Listener {
     @EventHandler
     public void onEvent(PlayerQuitEvent event) {
         UUID playerUuid = event.getPlayer().getUniqueId();
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> plugin.getPlayerManager().removePlayer(playerUuid), 1L);
+        plugin.getPlayerManager().removePlayer(playerUuid);
     }
 
 }
