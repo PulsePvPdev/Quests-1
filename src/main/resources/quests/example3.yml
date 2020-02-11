@@ -1,7 +1,15 @@
 # This is a quest which requires the previous quest to be complete to start.
 # Unlike the previous quest, this one can be re-done but it has a 10 minute cooldown.
-
-
+tasks:
+  # Unlike the previous two quests, this quest specifies a specific block to be broken.
+  mining:
+    type: "blockbreakcertain"
+    amount: 81
+    block: GOLD_ORE
+  building:
+    type: "blockplacecertain"
+    amount: 9
+    block: GOLD_BLOCK
 display:
   name: "&cExample III (Repeatable, 10 minute cooldown)"
   lore-normal:
