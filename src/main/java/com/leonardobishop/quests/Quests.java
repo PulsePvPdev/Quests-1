@@ -13,7 +13,6 @@ import com.leonardobishop.quests.player.QPlayerManager;
 import com.leonardobishop.quests.player.questprogressfile.QuestProgress;
 import com.leonardobishop.quests.player.questprogressfile.QuestProgressFile;
 import com.leonardobishop.quests.player.questprogressfile.TaskProgress;
-import com.leonardobishop.quests.quests.Quest;
 import com.leonardobishop.quests.quests.QuestManager;
 import com.leonardobishop.quests.quests.Task;
 import com.leonardobishop.quests.quests.tasktypes.TaskTypeManager;
@@ -29,7 +28,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -106,6 +104,7 @@ public class Quests extends JavaPlugin {
         taskTypeManager = new TaskTypeManager(this);
         questManager = new QuestManager(this);
         qPlayerManager = new QPlayerManager(this);
+        connector = new SQLConnector(this);
 
         dataGenerator();
         setupTitle();
@@ -175,26 +174,17 @@ public class Quests extends JavaPlugin {
                 this.getLogger().warning(ChatColor.GRAY.toString() + ChatColor.ITALIC + "If this is your first time using Quests, please delete the Quests folder and RESTART (not reload!) the server.");
             }
 
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                qPlayerManager.loadPlayer(player.getUniqueId(), false, StoreType.YAML);
-            }
+            Bukkit.getOnlinePlayers().forEach(p -> qPlayerManager.loadPlayer(p.getUniqueId(), false, StoreType.YAML));
         });
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
-            for (QPlayer qPlayer : qPlayerManager.getQPlayers()) {
-                if (qPlayer.isOnlyDataLoaded()) {
-                    continue;
-                }
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> qPlayerManager.getQPlayers().forEach(qPlayer -> {
+            if (!qPlayer.isOnlyDataLoaded()) {
                 qPlayer.getQuestProgressFile().saveToDisk();
             }
-        }, 12000L, 12000L);
-        Bukkit.getScheduler().runTaskTimer(this, () -> {
-            for (QPlayer qPlayer : qPlayerManager.getQPlayers()) {
-                if (qPlayer.isOnlyDataLoaded()) {
-                    continue;
-                }
+        }), 12000L, 12000L);
+        Bukkit.getScheduler().runTaskTimer(this, () -> qPlayerManager.getQPlayers().forEach(qPlayer -> {
+            if (!qPlayer.isOnlyDataLoaded()) {
                 QuestProgressFile questProgressFile = qPlayer.getQuestProgressFile();
-                for (Map.Entry<String, Quest> entry : this.getQuestManager().getQuests().entrySet()) {
-                    Quest quest = entry.getValue();
+                this.getQuestManager().getQuests().forEach((key, quest) -> {
                     QuestProgress questProgress = questProgressFile.getQuestProgress(quest);
                     if (questProgressFile.hasStartedQuest(quest)) {
                         boolean complete = true;
@@ -209,9 +199,9 @@ public class Quests extends JavaPlugin {
                             questProgressFile.completeQuest(quest);
                         }
                     }
-                }
+                });
             }
-        }, 10 * 20L, 10 * 20L); //Data is saved every 10 seconds in case of crash; the player data is also saved when the player leaves the server
+        }), 10 * 20L, 10 * 20L); //Data is saved every 10 seconds in case of crash; the player data is also saved when the player leaves the server
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             updater = new Updater(this);
             updater.check();
@@ -232,6 +222,7 @@ public class Quests extends JavaPlugin {
         questManager.getQuests().clear();
         questManager.getCategories().clear();
         taskTypeManager.resetTaskTypes();
+        connector.stopConnection();
 
         questsConfigLoader.loadConfig();
     }
@@ -242,15 +233,15 @@ public class Quests extends JavaPlugin {
 
     @SuppressWarnings("deprecation")
     public ItemStack getItemStack(ConfigurationSection config) {
-        String cName = config.getString("name", "name");
-        String cType = config.getString("type", "type");
+        String cName = config.getString("name", "Item Name");
+        String cType = config.getString("type", "BEDROCK"); // Error, type bedrock, no more errors!!! :)
         int data = config.getInt("data", 0);
         List<String> cLore = config.getStringList("lore");
 
         String name;
         Material type;
         List<String> lore = new ArrayList<>();
-        if (cLore != null) {
+        if (cLore != null && !cLore.isEmpty()) {
             for (String s : cLore) {
                 lore.add(ChatColor.translateAlternateColorCodes('&', s));
             }

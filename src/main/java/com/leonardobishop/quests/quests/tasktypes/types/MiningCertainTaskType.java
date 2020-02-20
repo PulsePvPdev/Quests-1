@@ -94,13 +94,13 @@ public final class MiningCertainTaskType extends TaskType {
         Object configData = task.getConfigValue("data");
         Object configSimilarBlocks = task.getConfigValue("use-similar-blocks");
 
-        material = Material.getMaterial(String.valueOf(configBlock));
+        material = Material.valueOf(String.valueOf(configBlock));
 
         Material blockType = block.getType();
         short blockData = block.getData();
 
-        if (blockType.equals(material)) {
-            return configData == null || (((int) blockData) == ((int) configData));
+        if (blockType == material) {
+            return configData == null || blockData == (int) configData;
         }
         return false;
     }
@@ -117,7 +117,7 @@ public final class MiningCertainTaskType extends TaskType {
 
         taskProgress.setProgress(progressBlocksBroken + amount);
 
-        if (((int) taskProgress.getProgress()) >= brokenBlocksNeeded) {
+        if ((int) taskProgress.getProgress() >= brokenBlocksNeeded) {
             taskProgress.setCompleted(true);
         }
     }

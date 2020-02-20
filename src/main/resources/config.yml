@@ -115,6 +115,9 @@ gui:
     lore:
     - "&7Return to the quest menu."
     type: "RED_STAINED_GLASS_PANE"
+  quest-cancel-filler:
+    name: "."
+    type: "RED_STAINED_GLASS_PANE"
 
 options:
   # If categories are disabled, quests will be put into one big gui.
@@ -176,7 +179,7 @@ database:
   # Ignore these if type is SQL or YAML
   host: "localhost"
   user: "database_user"
-  password: "p4ssW0rd"
+  pass: "p4ssW0rd"
   port: "3306"
   name: "database_name"
   ssl: true

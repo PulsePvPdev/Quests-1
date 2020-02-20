@@ -8,6 +8,7 @@ import com.leonardobishop.quests.Quests;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,9 +47,9 @@ public class QPlayerManager {
         if (getPlayer(uuid) == null || getPlayer(uuid).isOnlyDataLoaded()) {
             QuestProgressFile questProgressFile = new QuestProgressFile(uuid, plugin);
 
-            if (storeType != StoreType.YAML) { // Load from mysql
+            if (storeType != StoreType.YAML) { // Load from mysql/sql
                 try {
-                    PreparedStatement progressStatement = this.plugin.getDatabase().getConnection().prepareStatement("SELECT * FROM " + this.plugin.getDatabase().getTablePrefix() == null ? "" : this.plugin.getDatabase().getTablePrefix()
+                    PreparedStatement progressStatement = this.plugin.getDatabase().getConnection().prepareStatement("SELECT quest-id, started, completed, completed_before, completition_date FROM " + this.plugin.getDatabase().getTablePrefix() == null ? "" : this.plugin.getDatabase().getTablePrefix()
                             + "progress WHERE player-uuid='" + uuid.toString() + "';");
                     ResultSet progressResult = progressStatement.executeQuery();
                     if (progressStatement != null)
@@ -62,14 +63,20 @@ public class QPlayerManager {
 
                         QuestProgress questProgress = new QuestProgress(id, completed, completedBefore, completionDate, uuid, started, true);
 
-                        PreparedStatement progressTaskStatement = this.plugin.getDatabase().getConnection().prepareStatement("SELECT * FROM " + this.plugin.getDatabase().getTablePrefix() == null ? "" : this.plugin.getDatabase().getTablePrefix()
+                        PreparedStatement progressTaskStatement = this.plugin.getDatabase().getConnection().prepareStatement("SELECT *task-id, completed, progress FROM " + this.plugin.getDatabase().getTablePrefix() == null ? "" : this.plugin.getDatabase().getTablePrefix()
                                 + "task-progress WHERE player-uuid='" + uuid.toString() + "' AND quest-id='" + id + "';");
                         ResultSet progressTaskResult = progressTaskStatement.executeQuery();
                         if (progressTaskStatement != null)
-                            progressTaskResult.close(); //finished the job
+                            progressTaskStatement.close(); //finished the job
                         while (progressTaskResult.next()) {
+                            String taskid = progressTaskResult.getString("task-id");
+                            boolean taskCompleted = progressTaskResult.getBoolean("completed");
+                            Object taskProgression = progressTaskResult.getObject("progress");
 
+                            TaskProgress taskProgress = new TaskProgress(taskid, taskProgression, uuid, taskCompleted, false);
+                            questProgress.addTaskProgress(taskProgress);
                         }
+                        questProgressFile.addQuestProgress(questProgress);
                     }
                     if (progressResult != null)
                         progressResult.close(); //finished the job

@@ -1,13 +1,11 @@
 package com.leonardobishop.quests.obj.misc;
 
-import com.leonardobishop.quests.player.QPlayer;
-import com.leonardobishop.quests.quests.Category;
 import com.leonardobishop.quests.Quests;
 import com.leonardobishop.quests.obj.Options;
+import com.leonardobishop.quests.player.QPlayer;
+import com.leonardobishop.quests.quests.Category;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +52,7 @@ public class QMenuCategory implements QMenu {
         int pageMax = pageSize * page;
         String title = Options.color(Options.GUITITLE_QUESTS_CATEGORY.getStringValue());
 
-        ItemStack pageIs = new ItemStack(Material.DIRT);
+        //ItemStack pageIs = new ItemStack(Material.DIRT);
 
         Inventory inventory = Bukkit.createInventory(null, 54, title);
 
@@ -67,7 +65,7 @@ public class QMenuCategory implements QMenu {
             }
         }
 
-        inventory.setItem(49, pageIs);
+        //inventory.setItem(49, pageIs);
 
         if (Options.TRIM_GUI_SIZE.getBooleanValue() && page == 1) {
             int slotsUsed = 0;
@@ -86,7 +84,7 @@ public class QMenuCategory implements QMenu {
             Inventory trimmedInventory = Bukkit.createInventory(null, inventorySize, title);
 
             for (int slot = 0; slot < pageMax; slot++) {
-                if (slot >= trimmedInventory.getSize()){
+                if (slot >= trimmedInventory.getSize()) {
                     break;
                 }
                 trimmedInventory.setItem(slot, inventory.getItem(slot));

@@ -76,9 +76,10 @@ public final class BuildingCertainTaskType extends TaskType {
                     if (taskProgress.isCompleted()) {
                         continue;
                     }
-
-                    if (matchBlock(task, event.getBlock())) {
-                        increment(task, taskProgress, -1);
+                    if (task.getConfigValue("reverse-if-placed") != null && ((boolean) task.getConfigValue("reverse-if-placed"))) {
+                        if (matchBlock(task, event.getBlock())) {
+                            increment(task, taskProgress, -1);
+                        }
                     }
                 }
             }
@@ -92,7 +93,7 @@ public final class BuildingCertainTaskType extends TaskType {
         Object configData = task.getConfigValue("data");
         Object configSimilarBlocks = task.getConfigValue("use-similar-blocks");
 
-        material = Material.getMaterial(String.valueOf(configBlock));
+        material = Material.valueOf(String.valueOf(configBlock));
 
         Material blockType = block.getType();
         short blockData = block.getData();

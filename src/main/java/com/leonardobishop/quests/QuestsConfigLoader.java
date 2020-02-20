@@ -1,5 +1,6 @@
 package com.leonardobishop.quests;
 
+import com.leonardobishop.quests.api.enums.StoreType;
 import com.leonardobishop.quests.obj.misc.QItemStack;
 import com.leonardobishop.quests.quests.Category;
 import com.leonardobishop.quests.quests.Quest;
@@ -41,6 +42,29 @@ public class QuestsConfigLoader {
             brokenFiles.put("<MAIN CONFIG> config.yml", ConfigLoadError.MALFORMED_YAML);
             plugin.setBrokenConfig(true);
             return;
+        }
+
+        String storeTypeData = plugin.getConfig().getString("database.type", "YAML");
+        StoreType storeType;
+        try {
+            storeType = StoreType.valueOf(storeTypeData.toUpperCase());
+        } catch (Exception e) {
+            storeType = StoreType.YAML;
+        }
+        plugin.getDatabase().setStoreType(storeType);
+
+        if (storeType == StoreType.SQL) {
+            String fileName = plugin.getConfig().getString("database.file_name", "quests.db");
+            plugin.getDatabase().loadSQL(fileName);
+        } else if (storeType == StoreType.MY_SQL) {
+            String host = plugin.getConfig().getString("database.host");
+            String user = plugin.getConfig().getString("database.user");
+            String pass = plugin.getConfig().getString("database.pass");
+            String port = plugin.getConfig().getString("database.port");
+            String name = plugin.getConfig().getString("database.name");
+            String tablePrefix = plugin.getConfig().getString("database.table_prefix");
+            boolean useSSL = plugin.getConfig().getBoolean("database.ssl");
+            plugin.getDatabase().loadMySQL(host, user, pass, port, name, useSSL, tablePrefix);
         }
 
         for (String id : plugin.getConfig().getConfigurationSection("categories").getKeys(false)) {

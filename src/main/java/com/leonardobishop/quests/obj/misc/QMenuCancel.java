@@ -1,11 +1,10 @@
 package com.leonardobishop.quests.obj.misc;
 
-import com.leonardobishop.quests.player.QPlayer;
-import com.leonardobishop.quests.quests.Quest;
 import com.leonardobishop.quests.obj.Items;
 import com.leonardobishop.quests.obj.Options;
+import com.leonardobishop.quests.player.QPlayer;
+import com.leonardobishop.quests.quests.Quest;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -52,15 +51,12 @@ public class QMenuCancel implements QMenu {
         ItemStack yes = Items.QUEST_CANCEL_YES.getItem();
         ItemStack no = Items.QUEST_CANCEL_NO.getItem();
 
-        ItemStack is = new ItemStack(Material.RED_STAINED_GLASS_PANE);
-        ItemMeta ism = is.getItemMeta();
-        ism.setDisplayName(" ");
-        is.setItemMeta(ism);
+        ItemStack is = Items.QUEST_CANCEL_FILLER.getItem();
 
         Inventory inventory = Bukkit.createInventory(null, 27, title);
 
         for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, is);
+            inventory.setItem(i, is.clone());
         }
 
         inventory.setItem(10, no);
