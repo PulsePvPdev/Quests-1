@@ -61,6 +61,12 @@
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+
+        <!-- JitPack -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -86,6 +92,13 @@
             <artifactId>bentobox</artifactId>
             <version>LATEST</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- IridiumSkyblock -->
+        <dependency>
+            <groupId>com.github.IridiumLLC</groupId>
+            <artifactId>IridiumSkyblock</artifactId>
+            <version>master</version>
         </dependency>
 
         <!-- uSkyBlock -->

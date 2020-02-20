@@ -15,6 +15,7 @@ import com.leonardobishop.quests.player.questprogressfile.QuestProgressFile;
 import com.leonardobishop.quests.player.questprogressfile.TaskProgress;
 import com.leonardobishop.quests.quests.QuestManager;
 import com.leonardobishop.quests.quests.Task;
+import com.leonardobishop.quests.quests.tasktypes.TaskType;
 import com.leonardobishop.quests.quests.tasktypes.TaskTypeManager;
 import com.leonardobishop.quests.quests.tasktypes.types.*;
 import com.leonardobishop.quests.sql.SQLConnector;
@@ -154,6 +155,9 @@ public class Quests extends JavaPlugin {
             if (Bukkit.getPluginManager().isPluginEnabled("BentoBox")) {
                 BentoBoxLevelTaskType.register(taskTypeManager);
             }
+            if (Bukkit.getPluginManager().isPluginEnabled("IridiumSkyblock")) {
+                taskTypeManager.registerTaskType(new IridiumSkyblockValueType());
+            }
             if (Bukkit.getPluginManager().isPluginEnabled("uSkyBlock")) {
                 taskTypeManager.registerTaskType(new uSkyBlockLevelType());
             }
@@ -210,6 +214,11 @@ public class Quests extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        for (TaskType taskType : getTaskTypeManager().getTaskTypes()) {
+            try {
+                taskType.onDisable();
+            } catch (Exception ignored) { }
+        }
         for (QPlayer qPlayer : qPlayerManager.getQPlayers()) {
             if (qPlayer.isOnlyDataLoaded()) {
                 continue;
